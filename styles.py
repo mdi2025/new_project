@@ -62,6 +62,16 @@ def apply_styles():
     )
     style.map("Flat.TButton", background=[("active", "#2563eb")])
 
+    # Danger Button (Red)
+    style.configure("Danger.TButton",
+        font=("Segoe UI", 9, "bold"),
+        background="#dc2626",
+        foreground="white",
+        padding=(10, 6),
+        relief="flat"
+    )
+    style.map("Danger.TButton", background=[("active", "#b91c1c")])
+
     # Treeview styles (Traditional Heading)
     style.configure("Treeview.Heading",
         font=("Segoe UI", 10, "bold"),

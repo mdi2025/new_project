@@ -7,6 +7,7 @@ from tkinter import messagebox
 from pages.drawing_requests import DrawingRequestsPage
 from pages.drawing_issuance import DrawingIssuancePage
 from pages.placeholders import ReturnPage, ReportsPage
+from pages.users_page import UsersPage
 import styles
 
 # Page permission mapping: ID -> Page Key
@@ -15,7 +16,8 @@ PAGE_PERMISSIONS = {
     1: "Drawing Requests",
     2: "Drawing Issuance",
     3: "Return",
-    4: "Reports"
+    4: "Reports",
+    5: "User Management"
 }
 
 class MainApp(ttk.Frame):
@@ -91,6 +93,8 @@ class MainApp(ttk.Frame):
             self._menu_btn("Return", "Return").pack(fill="x")
         if "Reports" in allowed_pages:
             self._menu_btn("Reports", "Reports").pack(fill="x")
+        if "User Management" in allowed_pages:
+            self._menu_btn("User Management", "User Management").pack(fill="x")
 
         # Content Area
         self.content_frame = ttk.Frame(self)
@@ -131,6 +135,8 @@ class MainApp(ttk.Frame):
                 self.pages[page_key] = ReturnPage(self.content_frame)
             elif page_key == "Reports":
                 self.pages[page_key] = ReportsPage(self.content_frame)
+            elif page_key == "User Management":
+                self.pages[page_key] = UsersPage(self.content_frame)
         
         # Show page
         self.current_page = self.pages.get(page_key)

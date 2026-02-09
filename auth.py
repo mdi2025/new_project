@@ -23,6 +23,7 @@ def authenticate(username, password):
         2 = Drawing Issuance
         3 = Return
         4 = Reports
+        5 = User Management
     """
     try:
         # Hash the provided password with MD5
