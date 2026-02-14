@@ -32,6 +32,7 @@ class DrawingRequestsPage(ttk.Frame):
         # Column configuration: [Drawing ID, Revision, Status, Requested By, Action]
         self.col_widths = [150, 80, 100, 200, 120]
         self.row_widgets = []  # Cache for row widgets
+        self.is_loading = False # Flag to prevent redundant fetches
         
         self._build_ui()
         
@@ -39,8 +40,14 @@ class DrawingRequestsPage(ttk.Frame):
         self.after(100, self._start_loading)
 
     def _start_loading(self):
+        if self.is_loading:
+            return
+            
+        self.is_loading = True
         self.loading_label.place(relx=0.5, rely=0.5, anchor="center")
-        self.table_container.pack_forget() # Hide table while loading (optional, but cleaner)
+        # Keep table_container visible so the user sees the page structure
+        if not self.table_container.winfo_viewable():
+            self.table_container.pack(expand=True, fill="both")
         
         thread = threading.Thread(target=self._fetch_data_thread)
         thread.daemon = True
@@ -54,9 +61,9 @@ class DrawingRequestsPage(ttk.Frame):
         self.drawings = data
         self.filtered = list(self.drawings)
         self.current_page = 0
+        self.is_loading = False
         
         self.loading_label.place_forget()
-        self.table_container.pack(expand=True, fill="both")
         self._load_table()
 
     def _generate_data(self):

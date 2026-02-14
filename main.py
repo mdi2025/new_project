@@ -107,6 +107,10 @@ class DrawingSystemApp:
         
         styles.apply_styles()
         
+        # Warm up database connection in background
+        from db_handler import db
+        db.warm_up()
+        
         self.login_frame = LoginFrame(self.root, self.show_main_app)
         self.login_frame.pack(expand=True, fill="both")
         

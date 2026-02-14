@@ -4,6 +4,7 @@
 import MySQLdb
 import MySQLdb.cursors
 import sys
+import threading
 
 class DBHandler:
     def __init__(self):
@@ -12,6 +13,19 @@ class DBHandler:
         self.password = "erpdeveloper"
         self.dbname = "mdiacc"
         self.conn = None
+
+    def warm_up(self):
+        """Pre-establishes the database connection in a background thread."""
+        def connect():
+            try:
+                self.get_connection()
+                print("Database connection warmed up successfully.")
+            except Exception as e:
+                print("Failed to warm up database connection: {}".format(e))
+        
+        thread = threading.Thread(target=connect)
+        thread.daemon = True
+        thread.start()
 
     def get_connection(self):
         """Returns a database connection."""

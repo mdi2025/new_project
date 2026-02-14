@@ -49,13 +49,17 @@ class DrawingIssuancePage(ttk.Frame):
 
         ttk.Label(header, text="Drawing Issuance", style="Title.TLabel").pack(side="left")
 
+        ttk.Button(header, text="Refresh", style="Flat.TButton",
+                   command=self.refresh).pack(side="left", padx=20)
+
         # Search
         self.search_var = tk.StringVar()
         self.search_entry = tk.Entry(header, textvariable=self.search_var,
                                      font=("Segoe UI", 10), bd=0, relief="flat",
                                      width=25, highlightthickness=1,
                                      highlightbackground="#cbd5e1",
-                                     highlightcolor=styles.PRIMARY)
+                                     highlightcolor=styles.PRIMARY,
+                                     fg="#94a3b8")
         self.search_entry.pack(side="right", ipady=8)
         self.search_entry.insert(0, "Search requests...")
         
@@ -179,12 +183,10 @@ class DrawingIssuancePage(ttk.Frame):
                     btn_frame = tk.Frame(action_cell, bg="white")
                     btn_frame.pack(expand=True)
                     
-                    issue_btn = tk.Button(btn_frame, text="Issue", bg="#16a34a", fg="white",
-                                          font=("Segoe UI", 9, "bold"), relief="flat", padx=8)
+                    issue_btn = ttk.Button(btn_frame, text="Issue", style="Success.TButton")
                     issue_btn.pack(side="left", padx=3)
                     
-                    reject_btn = tk.Button(btn_frame, text="Reject", bg="#dc2626", fg="white",
-                                           font=("Segoe UI", 9, "bold"), relief="flat", padx=8)
+                    reject_btn = ttk.Button(btn_frame, text="Reject", style="Danger.TButton")
                     reject_btn.pack(side="left", padx=3)
                     
                     cells.append(action_cell)
@@ -250,6 +252,13 @@ class DrawingIssuancePage(ttk.Frame):
             max_page = max(0, (len(self.filtered) - 1) // self.page_size)
             self.current_page = min(self.current_page, max_page)
             self._load_table()
+
+    def refresh(self):
+        """Simulate refreshing data."""
+        self.drawings = self._generate_static_data()
+        self.filtered = list(self.drawings)
+        self.current_page = 0
+        self._load_table()
 
     def _search_data(self, *args):
         q = self.search_var.get().lower().strip()
